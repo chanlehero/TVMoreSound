@@ -6,4 +6,5 @@
     <string name="audio_media_route_provider_service">音频媒体提供服务</string>
     <string name="action_scan_audio_devices_button_label">扫描音频设备</string>
     <string name="action_scan_audio_devices_button_scanning_label">扫描中</string>
+
 </resources>

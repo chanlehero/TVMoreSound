@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private Intent audioServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        audioServiceIntent=new Intent(this,AudioMediaRouteProviderService.class);
     }
 
     @Override
@@ -41,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 Log.i(TAG,"start ................isChecked:"+isChecked);
                 if(isChecked){
-                    startService(audioServiceIntent);
+                    //startService(audioServiceIntent);
                     Log.i(TAG,"started audio service!");
                     Toast.makeText(MainActivity.this,"已开启音频服务",Toast.LENGTH_SHORT).show();
                 }else {
-                    stopService(audioServiceIntent);
+                    //stopService(audioServiceIntent);
                     Log.i(TAG,"stopped audio service!");
                     Toast.makeText(MainActivity.this,"已关闭音频服务",Toast.LENGTH_SHORT).show();
                 }

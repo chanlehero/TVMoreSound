@@ -7,14 +7,12 @@
     android:orientation="vertical"
     tools:context="com.ch.tvmoresound.MainActivityFragment"
     tools:showIn="@layout/activity_main">
-
     <Button
         android:id="@+id/button_scan_devices"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="8"
         android:text="@string/action_scan_audio_devices_button_label" />
-
     <ListView
         android:id="@+id/android:list"
         android:layout_width="match_parent"

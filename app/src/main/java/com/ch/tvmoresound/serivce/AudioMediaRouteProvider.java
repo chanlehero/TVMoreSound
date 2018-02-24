@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 public class AudioMediaRouteProvider extends MediaRouteProvider {
 
+    public static final String CATEGORY_SAMPLE_ROUTE =
+            "AudioMediaRouteProvider.CATEGORY_SAMPLE_ROUTE";
+
     private static final ArrayList<IntentFilter> CONTROL_FILTERS_BASIC;
     private static final String TAG = "AudioMediaRouteProvider";
 
