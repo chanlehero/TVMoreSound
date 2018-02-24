@@ -2,7 +2,7 @@
     <string name="app_name">TVMoreSound</string>
     <string name="action_settings">设置</string>
     <string name="action_startService">开启服务</string>
-    <string name="service_audio_label">音频服务</string>
+    <string name="service_audio_label">音频广播/音频接收</string>
     <string name="audio_media_route_provider_service">音频媒体提供服务</string>
     <string name="action_scan_audio_devices_button_label">扫描音频设备</string>
     <string name="action_scan_audio_devices_button_scanning_label">扫描中</string>

@@ -20,13 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".serivce.AudioMediaRouteProviderService"
-            android:label="@string/audio_media_route_provider_service"
-            android:process=":mrp">
-            <intent-filter>
-                <action android:name="android.media.MediaRouteProviderService" />
-            </intent-filter>
-        </service>
+        <service android:name=".service.AudioBroadcastService" />
     </application>
 
 </manifest>

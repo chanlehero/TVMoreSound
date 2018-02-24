@@ -2,23 +2,22 @@ package com.ch.tvmoresound;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.ch.tvmoresound.serivce.AudioMediaRouteProviderService;
+import com.ch.tvmoresound.service.AudioBroadcastService;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+
+    private Intent serviceIntent;
 
 
     @Override
@@ -42,14 +41,33 @@ public class MainActivity extends AppCompatActivity {
                     //startService(audioServiceIntent);
                     Log.i(TAG,"started audio service!");
                     Toast.makeText(MainActivity.this,"已开启音频服务",Toast.LENGTH_SHORT).show();
+                    startAudioBroadcastService();
+
                 }else {
                     //stopService(audioServiceIntent);
                     Log.i(TAG,"stopped audio service!");
                     Toast.makeText(MainActivity.this,"已关闭音频服务",Toast.LENGTH_SHORT).show();
+                    stopBroadcastService();
                 }
             }
         });
         return true;
+    }
+
+    public void startAudioBroadcastService(){
+        if(serviceIntent==null) {
+            serviceIntent = new Intent(this, AudioBroadcastService.class);
+            startService(serviceIntent);
+        }else {
+            startService(serviceIntent);
+        }
+    }
+
+    public void stopBroadcastService(){
+        if(serviceIntent!=null) {
+            //serviceIntent = new Intent(this, AudioBroadcastService.class);
+            stopService(serviceIntent);
+        }
     }
 
     @Override

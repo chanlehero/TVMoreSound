@@ -7,12 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v7.media.MediaControlIntent;
-import android.support.v7.media.MediaRouteSelector;
-import android.support.v7.media.MediaRouter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.ch.tvmoresound.serivce.AudioMediaRouteProvider;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,7 +32,7 @@ public class MainActivityFragment extends ListFragment {
 
     private boolean scanning = false;
     private ArrayAdapter<AudioDeviceItem> deviceItemArrayAdapter;
-    private List<AudioDeviceItem>  audioDeviceItems = new ArrayList<AudioDeviceItem>();
+    private Map<String,AudioDeviceItem> audioDeviceItems = new HashMap<String,AudioDeviceItem>();
     private BluetoothAdapter bluetoothAdapter;
     private int REQUEST_ENABLE_BT=101;
 
@@ -47,20 +43,23 @@ public class MainActivityFragment extends ListFragment {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                Log.i(TAG,"found device:"+device.getName()+":"+device.getAddress());
+                Log.i(TAG, "found device:" + device.getName() + ":" + device.getAddress());
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    Log.i(TAG,"add:"+device.getName()+":"+device.getAddress());
+                    Log.i(TAG, "add:" + device.getName() + ":" + device.getAddress());
                     AudioDeviceItem item = new AudioDeviceItem();
                     item.setName(device.getName());
                     item.setMacAddress(device.getAddress());
                     item.setChecked(false);
-                    deviceItemArrayAdapter.add(item);
-                }else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                    Log.i(TAG,"ACTION_DISCOVERY_FINISHED=========");
-                    setScanButtonText(R.string.action_scan_audio_devices_button_label);
+                    if(audioDeviceItems.get(item.getMacAddress())==null) {
+                        deviceItemArrayAdapter.add(item);
+                    }
+                    // Add the name and address to an array adapter to show in a ListView
+                    //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                 }
-                // Add the name and address to an array adapter to show in a ListView
-                //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+            }else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                Log.i(TAG, "ACTION_DISCOVERY_FINISHED=========");
+                scanning=false;
+                setScanButtonText(R.string.action_scan_audio_devices_button_label);
             }
         }
     };
@@ -86,9 +85,9 @@ public class MainActivityFragment extends ListFragment {
             @Override
             public void onClick(View view) {
                 if(scanning){
-                    scanning=false;
                     bluetoothAdapter.cancelDiscovery();
                     scanButton.setText(R.string.action_scan_audio_devices_button_label);
+                    scanning=false;
                 }else {
                     scanning=true;
                     //deviceItemArrayAdapter.clear();
@@ -112,7 +111,10 @@ public class MainActivityFragment extends ListFragment {
             item.setName(device.getName());
             item.setMacAddress(device.getAddress());
             item.setChecked(false);
-            deviceItemArrayAdapter.add(item);
+            if(audioDeviceItems.get(item.getMacAddress())==null) {
+                audioDeviceItems.put(item.getMacAddress(), item);
+                deviceItemArrayAdapter.add(item);
+            }
         }
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         this.getActivity().registerReceiver(mReceiver, filter);
@@ -138,7 +140,7 @@ public class MainActivityFragment extends ListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        deviceItemArrayAdapter=new ArrayAdapter<AudioDeviceItem>(this.getContext(),R.layout.audio_device_item,R.id.audio_device_item_textView,audioDeviceItems);
+        deviceItemArrayAdapter=new ArrayAdapter<AudioDeviceItem>(this.getContext(),R.layout.audio_device_item,R.id.audio_device_item_textView);
         this.setListAdapter(deviceItemArrayAdapter);
     }
 }
