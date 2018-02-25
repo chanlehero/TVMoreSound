@@ -31,7 +31,7 @@ public class MainActivityFragment extends ListFragment {
     private static final String TAG = "MainActivityFragment";
 
     private boolean scanning = false;
-    private ArrayAdapter<AudioDeviceItem> deviceItemArrayAdapter;
+    private AudioDevicesAdapter deviceItemArrayAdapter;
     private Map<String,AudioDeviceItem> audioDeviceItems = new HashMap<String,AudioDeviceItem>();
     private BluetoothAdapter bluetoothAdapter;
     private int REQUEST_ENABLE_BT=101;
@@ -47,7 +47,11 @@ public class MainActivityFragment extends ListFragment {
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
                     Log.i(TAG, "add:" + device.getName() + ":" + device.getAddress());
                     AudioDeviceItem item = new AudioDeviceItem();
-                    item.setName(device.getName());
+                    if(device.getName()==null) {
+                        item.setName(device.getAddress());
+                    }else {
+                        item.setName(device.getName());
+                    }
                     item.setMacAddress(device.getAddress());
                     item.setChecked(false);
                     if(audioDeviceItems.get(item.getMacAddress())==null) {
@@ -140,7 +144,7 @@ public class MainActivityFragment extends ListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        deviceItemArrayAdapter=new ArrayAdapter<AudioDeviceItem>(this.getContext(),R.layout.audio_device_item,R.id.audio_device_item_textView);
+        deviceItemArrayAdapter=new AudioDevicesAdapter(this.getContext(),R.layout.audio_device_item,R.id.audio_device_item_textView);
         this.setListAdapter(deviceItemArrayAdapter);
     }
 }

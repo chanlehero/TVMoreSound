@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.ch.tvmoresound.service.AudioBroadcastService;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnAudioDeviceItemChangedListener{
 
     private static final String TAG = "MainActivity";
 
@@ -83,5 +83,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onAudioDeviceItemSwitchOn(AudioDeviceItem item) {
+
+    }
+
+    @Override
+    public void onAudioDeviceItemSwitchOff(AudioDeviceItem item) {
+
     }
 }
